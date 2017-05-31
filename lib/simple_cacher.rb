@@ -18,26 +18,26 @@ class SimpleCacher
   def import(key:)
     key = nskey(key)
 
-    @redis.exists(key) ? JSON.parse(key) : nil
+    redis.exists(key) ? JSON.parse(key) : nil
   end
 
   def export(key:, data: nil, expire: nil)
     key = nskey(key)
 
-    hash = @redis.set(key, data.to_json)
-    @redis.expire(key, expire.to_i) unless expire.nil?
+    hash = redis.set(key, data.to_json)
+    redis.expire(key, expire.to_i) unless expire.nil?
     hash
   end
 
   def reach_limit?(key:, limit:, expire: nil)
     key = nskey(key)
 
-    if @redis.exists(key)
+    if redis.exists(key)
       # 如果存在, 递增 1, 记录访问的次数.
-      @redis.incr(key)
+      redis.incr(key)
     else
-      @redis.set(key, '1')
-      @redis.expire(key, expire.to_i) unless expire.nil?
+      redis.set(key, '1')
+      redis.expire(key, expire.to_i) unless expire.nil?
     end
 
     redis.get(key).to_i > limit ? true : false
@@ -45,7 +45,7 @@ class SimpleCacher
 
   def fresh?(key:)
     (Rails.env.production? or Rails.env.test?) &&
-      @redis.exists(nskey(key))
+      redis.exists(nskey(key))
   end
   alias exists? fresh?
 end
