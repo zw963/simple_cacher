@@ -16,10 +16,12 @@ class SimpleCacher
   end
 
   def import(key:)
-    JSON.parse(redis.get(nskey(key)))
+    key = nskey(key)
+
+    @redis.exists(key) ? JSON.parse(key) : nil
   end
 
-  def export(data: true, key:, expire: nil)
+  def export(key:, data: nil, expire: nil)
     key = nskey(key)
 
     hash = @redis.set(key, data.to_json)
