@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 module SimpleCacher
-  VERSION = [0, 0, 1]
+  VERSION = [0, 0, 2]
 
   class << VERSION
     def to_s
-      join(?.)
+      join('.')
     end
   end
 end
