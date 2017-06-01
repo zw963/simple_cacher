@@ -26,10 +26,10 @@ class SimpleCacher
 
     if redis.setnx(key, data.to_json)
       redis.expire(key, expire) unless expire.nil?
+      JSON.load(redis.get(key))
     else
       fail 'Key alreday exist in cacher, export failed!'
     end
-    import(key: key)
   end
 
   def expire!(key)
