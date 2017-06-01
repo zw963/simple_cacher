@@ -14,7 +14,11 @@ class SimpleCacher
   def import(key:)
     key = nskey(key)
 
-    redis.exists(key) ? JSON.load(redis.get(key)) : nil
+    if redis.exists(key)
+      JSON.load(redis.get(key))
+    else
+      fail 'Key not exist, import failed!'
+    end
   end
 
   def export(key:, data: nil, expire: nil)
@@ -24,7 +28,7 @@ class SimpleCacher
     if redis.setnx(key, data.to_json)
       redis.expire(key, expire) unless expire.nil?
     else
-      fail 'Key alreday exist in cacher, export failed.'
+      fail 'Key alreday exist in cacher, export failed!'
     end
     import(key)
   end
