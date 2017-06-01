@@ -41,16 +41,16 @@ class SimpleCacher
 
   def reach_limit?(key:, limit:, expire: nil)
     key = nskey(key)
+    expire = Integer(expire) unless expire.nil?
+    limit = Integer(limit)
 
     if redis.exists(key)
-      # 如果存在, 递增 1, 记录访问的次数.
-      redis.incr(key)
+      redis.incr(key) > limit ? true : false
     else
       redis.set(key, '1')
-      redis.expire(key, expire.to_i) unless expire.nil?
+      redis.expire(key, expire) unless expire.nil?
+      false
     end
-
-    redis.get(key).to_i > limit ? true : false
   end
 
   def fresh?(key:)
