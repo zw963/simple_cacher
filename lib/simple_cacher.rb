@@ -29,6 +29,12 @@ class SimpleCacher
     import(key)
   end
 
+  def expire!(key)
+    key = nskey(key)
+
+    redis.expire(key, -1)
+  end
+
   def reach_limit?(key:, limit:, expire: nil)
     key = nskey(key)
 
