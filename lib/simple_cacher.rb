@@ -11,10 +11,6 @@ class SimpleCacher
     @namespace = Digest::MD5.new.update(namespace).to_s
   end
 
-  def nskey(key)
-    "#{namespace}:#{key}"
-  end
-
   def import(key:)
     key = nskey(key)
 
@@ -23,9 +19,10 @@ class SimpleCacher
 
   def export(key:, data: nil, expire: nil)
     key = nskey(key)
+    expire = Integer(expire) unless expire.nil?
 
     if redis.setnx(key, data.to_json)
-      redis.expire(key, expire.to_i) unless expire.nil?
+      redis.expire(key, expire) unless expire.nil?
     else
       fail 'Key alreday exist in cacher, export failed.'
     end
@@ -51,4 +48,10 @@ class SimpleCacher
       redis.exists(nskey(key))
   end
   alias exists? fresh?
+
+  private
+
+  def nskey(key)
+    "#{namespace}:#{key}"
+  end
 end
