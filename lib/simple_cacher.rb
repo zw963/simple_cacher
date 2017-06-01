@@ -54,8 +54,10 @@ class SimpleCacher
   end
 
   def fresh?(key:)
-    (Rails.env.production? or Rails.env.test?) &&
-      redis.exists(nskey(key))
+    # if in develpment mode, not use cache
+    return false if defined?(Rails) && Rails.env.development?
+
+    redis.exists(nskey(key))
   end
   alias exists? fresh?
 
