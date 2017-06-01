@@ -18,7 +18,7 @@ class SimpleCacher
   def import(key:)
     key = nskey(key)
 
-    redis.exists(key) ? JSON.parse(redis.get(key)) : nil
+    redis.exists(key) ? JSON.load(redis.get(key)) : nil
   end
 
   def export(key:, data: nil, expire: nil)
