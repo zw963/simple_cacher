@@ -30,7 +30,7 @@ class SimpleCacher
     else
       fail 'Key alreday exist in cacher, export failed!'
     end
-    import(key)
+    import(key: key)
   end
 
   def expire!(key)
