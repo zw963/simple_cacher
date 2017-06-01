@@ -24,9 +24,12 @@ class SimpleCacher
   def export(key:, data: nil, expire: nil)
     key = nskey(key)
 
-    hash = redis.set(key, data.to_json)
-    redis.expire(key, expire.to_i) unless expire.nil?
-    hash
+    if redis.setnx(key, data.to_json)
+      redis.expire(key, expire.to_i) unless expire.nil?
+    else
+      fail 'Key alreday exist in cacher, export failed.'
+    end
+    import(key)
   end
 
   def reach_limit?(key:, limit:, expire: nil)
