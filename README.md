@@ -1,10 +1,6 @@
 # SimpleCacher [![Build Status](https://travis-ci.org/zw963/simple_cacher.svg?branch=master)](https://travis-ci.org/zw963/simple_cacher) [![Gem Version](https://badge.fury.io/rb/simple_cacher.svg)](http://badge.fury.io/rb/simple_cacher)
 
-TODO: Write a gem description
-
-## Philosophy
-
-TODO: Write philosophy
+A very simple use/implement but very useful cacher, use Redis database.
 
 ## Getting Started
 
@@ -20,12 +16,38 @@ Add to your Gemfile
 
 ## Usage
 
-TODO: Write usage instructions here
+### Use as a home page cache, expired within 120 second.
+
+```rb
+# The first step is need specify a namespace, one string which should unique each other
+# for different purpose, in this current case (one Rails controller action), `request.url'
+# is a perfect candidate.
+cacher = SimpleCacher.new(namespace: request.url)
+
+if cacher.fresh?(key: 'items')
+  @items_hash = cacher.import(key: 'items')
+else
+  # do something get correct data and assign to a variable items_hash
+  @items_hash = cacher.export(key: 'items', data: items_hash, expire: 120)
+end
+```
+
+### Use as a counter, limit IP access during a time span.
+
+```rb
+counter = SimpleCacher.new(namespace: 'my_api:sms_log:user_ip')
+
+# Sum IP 123.123.123.123 access count in one day, 
+if counter.reach_limit?(key: '123.123.123.123', limit: 5, expire: 86400)
+  # if exceed the limit, sent a warn info
+else
+  # do some sutff
+end
+```  
 
 ## Support
 
-  * MRI 1.9.3+
-  * Rubinius 2.2+
+Still not test, should work in recent ruby version, the only dependency is [redis-rb](https://github.com/redis/redis-rb)
 
 ## Limitations
 
