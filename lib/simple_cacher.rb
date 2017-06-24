@@ -16,44 +16,37 @@ class SimpleCacher
     if redis.exists(key)
       JSON.load(redis.get(key))
     else
-      fail 'Key not exist, import failed!'
+      fail 'Import failed, key not exist!'
     end
   end
 
   def export(key:, data: nil, expire: nil)
     key = nskey(key)
+    nx = __callee__ == :export
     expire = Integer(expire) unless expire.nil?
 
-    if redis.setnx(key, data.to_json)
-      redis.expire(key, expire) unless expire.nil?
+    if redis.set(key, data.to_json, nx: nx, ex: expire)
       JSON.load(redis.get(key))
     else
-      fail 'Key alreday exist in cacher, export failed!'
+      fail 'Export failed, key was exist!'
     end
   end
-
-  def expire!(key)
-    key = nskey(key)
-
-    redis.expire(key, -1)
-  end
+  alias export! export
 
   def reach_limit?(key:, limit:, expire: nil)
     key = nskey(key)
     expire = Integer(expire) unless expire.nil?
-    limit = Integer(limit)
 
     if redis.exists(key)
-      redis.incr(key) > limit ? true : false
+      redis.incr(key) > Integer(limit) ? true : false
     else
-      redis.set(key, '1')
-      redis.expire(key, expire) unless expire.nil?
+      redis.set(key, '1', ex: expire)
       false
     end
   end
 
   def fresh?(key:)
-    # if in develpment mode, not use cache
+    # if use with rails in develpment mode, not detect key existance.
     return false if defined?(Rails) && Rails.env.development?
 
     redis.exists(nskey(key))
