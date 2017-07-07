@@ -1,4 +1,4 @@
-require 'simple_cacher'
+require_relative '../lib/simple_cacher'
 require 'redis'
 
 describe 'test rspec' do

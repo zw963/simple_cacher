@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
-module SimpleCacher
+class SimpleCacher
   VERSION = [0, 0, 9]
 
   class << VERSION

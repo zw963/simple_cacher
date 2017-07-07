@@ -4,8 +4,8 @@ class SimpleCacher
   attr_reader :redis, :namespace
 
   def initialize(namespace:)
-    # 默认使用最后一个 db, 避免冲突.
-    # TODO: 使得 db 可配置
+    # use redis last db.
+    # TODO: make db configurable
     @redis = Redis.new(url: 'redis://127.0.0.1:6379/15')
     @namespace = Digest::MD5.new.update(namespace).to_s
   end
