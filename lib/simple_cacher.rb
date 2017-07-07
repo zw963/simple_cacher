@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+require 'json'
 
 class SimpleCacher
   attr_reader :redis, :namespace
