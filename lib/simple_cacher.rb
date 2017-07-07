@@ -45,13 +45,12 @@ class SimpleCacher
     end
   end
 
-  def fresh?(key:)
+  def exists?(key:)
     # if use with rails in develpment mode, not detect key existance.
     return false if defined?(Rails) && Rails.env.development?
 
     redis.exists(nskey(key))
   end
-  alias exists? fresh?
 
   private
 
