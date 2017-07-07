@@ -20,5 +20,5 @@ Gem::Specification.new do |s|
   s.executables                 = `git ls-files -- bin/*`.split("\n").map {|f| File.basename(f) }
 
   s.add_runtime_dependency 'redis', '>1.0'
-  s.add_development_dependency 'rspec',  '>3.5'
+  s.add_development_dependency 'rspec',  '>=3.6'
 end

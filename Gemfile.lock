@@ -27,7 +27,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rspec (> 3.5)
+  rspec (>= 3.6)
   simple_cacher!
 
 BUNDLED WITH
