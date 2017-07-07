@@ -2,11 +2,9 @@ language: ruby
 script: bundle exec rspec
 install: bundle install
 rvm:
-  - 2.0.0
   - 2.1
   - 2.2
   - 2.3
-  - rbx-2
-  - rbx-3
+  - 2.4
 services:
   - redis-server
