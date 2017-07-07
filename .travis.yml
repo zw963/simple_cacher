@@ -8,3 +8,5 @@ rvm:
   - 2.3
   - rbx-2
   - rbx-3
+services:
+  - redis-server
