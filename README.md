@@ -47,7 +47,7 @@ end
 
 ## Support
 
-Still not test, should work in recent ruby version, the only dependency is [redis-rb](https://github.com/redis/redis-rb)
+worked in MRI 2.[1,2,3,4], the only dependency is [redis-rb](https://github.com/redis/redis-rb)
 
 ## Limitations
 
