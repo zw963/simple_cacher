@@ -1,5 +1,4 @@
-require_relative '../lib/simple_cacher'
-require 'redis'
+require 'simple_cacher'
 
 describe 'test rspec' do
   before { subject.redis.flushall }

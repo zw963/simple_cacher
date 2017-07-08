@@ -1,4 +1,6 @@
 require 'json'
+require 'redis'
+require 'simple_cacher/version'
 
 class SimpleCacher
   attr_reader :redis, :namespace
