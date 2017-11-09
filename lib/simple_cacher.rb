@@ -5,16 +5,13 @@ require 'simple_cacher/version'
 class SimpleCacher
   attr_reader :redis, :namespace
 
-  def initialize(namespace:)
-    # use redis last db.
-    # TODO: make db configurable
-    @redis = Redis.new(url: 'redis://127.0.0.1:6379/15')
+  def initialize(namespace:, host: '127.0.0.1', port: '6379', db: '15')
+    @redis = Redis.new(url: "redis://#{host}:#{port}/#{db}")
     @namespace = Digest::MD5.new.update(namespace).to_s
   end
 
   def import(key:)
     key = nskey(key)
-
     if redis.exists(key)
       JSON.load(redis.get(key))
     else
@@ -24,6 +21,7 @@ class SimpleCacher
 
   def export(key:, data: nil, expire: nil)
     key = nskey(key)
+    # nx == true set key only when key not exists
     nx = __callee__ == :export
     expire = Integer(expire) unless expire.nil?
 
@@ -33,6 +31,7 @@ class SimpleCacher
       fail 'Export failed, key was exist!'
     end
   end
+  # export! always set key regardless of key if exist
   alias export! export
 
   def reach_limit?(key:, limit:, expire: nil)
