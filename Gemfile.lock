@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    simple_cacher (0.2.0)
+    simple_cacher (0.2.2)
       redis (> 1.0)
 
 GEM
@@ -31,4 +31,4 @@ DEPENDENCIES
   simple_cacher!
 
 BUNDLED WITH
-   1.15.1
+   1.15.3

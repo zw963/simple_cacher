@@ -42,11 +42,11 @@ describe 'test rspec' do
     sleep 3
     expect(subject.exists?(key: 'test_key')).to be false
 
-    values = (1..21).map { subject.reach_limit?(key: 'test_counter', limit: 20, expire: 20) }
+    values = (1..20).map { subject.reach_limit?(key: 'test_counter', limit: 20) }
     expect(values).to eq [
       false, false, false, false, false, false, false,
       false, false, false, false, false, false, false,
-      false, false, false, false, false, false, true
+      false, false, false, false, false, true
     ]
   end
 end

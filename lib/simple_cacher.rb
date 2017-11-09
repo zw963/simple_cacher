@@ -39,7 +39,7 @@ class SimpleCacher
     expire = Integer(expire) unless expire.nil?
 
     if redis.exists(key)
-      redis.incr(key) > Integer(limit) ? true : false
+      redis.incr(key) >= Integer(limit) ? true : false
     else
       redis.set(key, '1', ex: expire)
       false
