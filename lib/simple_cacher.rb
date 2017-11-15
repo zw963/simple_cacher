@@ -4,6 +4,7 @@ require 'simple_cacher/version'
 
 class SimpleCacher
   attr_reader :redis, :namespace
+  attr_accessor :counter
 
   def initialize(namespace:, host: '127.0.0.1', port: '6379', db: '15')
     @redis = Redis.new(url: "redis://#{host}:#{port}/#{db}")
@@ -39,9 +40,16 @@ class SimpleCacher
     expire = Integer(expire) unless expire.nil?
 
     if redis.exists(key)
-      redis.incr(key) >= Integer(limit) ? true : false
+      if redis.incr(key) >= Integer(limit)
+        self.counter = limit
+        true
+      else
+        self.counter = redis.get(key).to_i
+        false
+      end
     else
       redis.set(key, '1', ex: expire)
+      self.counter = 1
       false
     end
   end
