@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 class SimpleCacher
-  VERSION = [0, 2, 2]
+  VERSION = [0, 2, 3]
 
   class << VERSION
     def to_s
