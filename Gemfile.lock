@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    simple_cacher (0.2.2)
+    simple_cacher (0.2.3)
       redis (> 1.0)
 
 GEM
